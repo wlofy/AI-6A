@@ -1,0 +1,124 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{float}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{caption}
+
+\setlength{\droptitle}{-4em}
+\title{Lab 07: HTTP Protocol}
+\author{Fayaz Noor \\ National University of Computer and Emerging Sciences, Peshawar}
+\date{}
+
+\begin{document}
+
+\maketitle
+\section*{Instructions}
+Each question below is answered using a short explanation, along with a screenshot of the relevant packet(s) from Wireshark.
+
+\section*{Section 1: Conditional GET}
+
+\subsection*{Q1. Do you see an “If-Modified-Since” line in the first HTTP GET?}
+\textbf{Answer:} No, the first GET does not include the `If-Modified-Since` header.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q1.png}
+\caption{First HTTP GET request without `If-Modified-Since`}
+\end{figure}
+
+\subsection*{Q2. Did the server return the contents of the file?}
+\textbf{Answer:} Yes. The server responded with `200 OK` and included the file contents.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q2.png}
+\caption{HTTP 200 OK with entity body}
+\end{figure}
+
+\subsection*{Q3. Is there an “If-Modified-Since” in the second GET?}
+\textbf{Answer:} Yes, it includes a timestamp from the original response.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q3.png}
+\caption{Conditional GET with `If-Modified-Since`}
+\end{figure}
+
+\subsection*{Q4. What was the response status to the second GET?}
+\textbf{Answer:} The server replied with `304 Not Modified`, so the file was not resent.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q4.png}
+\caption{HTTP 304 Not Modified}
+\end{figure}
+
+\section*{Section 2: Retrieving Long Documents}
+
+\subsection*{Q5. How many GETs were sent? Which packet contains the GET?}
+\textbf{Answer:} One GET. Refer to packet \#X in your capture.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q5.png}
+\caption{HTTP GET for long HTML document}
+\end{figure}
+
+\subsection*{Q6. Which packet has the status code?}
+\textbf{Answer:} The next packet after the GET contains `200 OK`.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q6.png}
+\caption{Response to GET with 200 OK}
+\end{figure}
+
+\subsection*{Q7. What is the status code and phrase?}
+\textbf{Answer:} `200 OK`
+
+\subsection*{Q8. How many segments contain the response?}
+\textbf{Answer:} X segments — look for “TCP segment of a reassembled PDU”.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q8.png}
+\caption{Reassembled TCP segments}
+\end{figure}
+
+\section*{Section 3: Embedded Objects}
+
+\subsection*{Q9. How many GETs were sent and to which IPs?}
+\textbf{Answer:} Three GETs — one for HTML, two for images. IPs: [IP1], [IP2].
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q9.png}
+\caption{Three GET requests}
+\end{figure}
+
+\subsection*{Q10. Were the images fetched serially or in parallel?}
+\textbf{Answer:} Fetched in parallel — timestamps of GETs are nearly identical.
+
+\section*{Section 4: HTTP Authentication}
+
+\subsection*{Q11. What was the response to the initial GET?}
+\textbf{Answer:} `401 Unauthorized` — server requests authentication.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q11.png}
+\caption{HTTP 401 Unauthorized}
+\end{figure}
+
+\subsection*{Q12. What new field is in the second GET?}
+\textbf{Answer:} `Authorization: Basic d2lyZXNoYXJrLXN0dWRlbnRzOm5ldHdvcms=`
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{q12.png}
+\caption{GET with Authorization header}
+\end{figure}
+
+\end{document}
